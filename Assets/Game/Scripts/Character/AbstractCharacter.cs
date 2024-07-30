@@ -59,13 +59,7 @@ public abstract class AbstractCharacter : MonoBehaviour
         SimplePool.Despawn(stackBrick.Pop());
     }
 
-    public void PreventCharacter(Vector3 preventPos)
-    {
-        if(transform.position.z >= preventPos.z)
-        {
-            transform.position = new Vector3(transform.position.x,transform.position.y, preventPos.z);
-        }
-    }
+
     
 
 }

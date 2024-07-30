@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
-public class Brigde : MonoBehaviour
+public class Bridge : MonoBehaviour
 {
     [SerializeField]
     private MeshRenderer meshRenderer;
@@ -42,9 +42,20 @@ public class Brigde : MonoBehaviour
             }
             if (bot.GetStackCount() > 0 && meshRenderer.material.color != bot.GetColor())
             {
+                boxCollider.isTrigger = true;
                 bot.StackDown();
-                meshRenderer.material.color = meshRenderer.material.color = bot.GetColor();
+                meshRenderer.material.color = bot.GetColor();
             }
+            else if (meshRenderer.material.color == bot.GetColor())
+            {
+                boxCollider.isTrigger = true;
+            }
+            else
+            {
+                bot.ChangeState(new PickBrickState());
+                boxCollider.isTrigger = false;
+            }
+
         }
 
 

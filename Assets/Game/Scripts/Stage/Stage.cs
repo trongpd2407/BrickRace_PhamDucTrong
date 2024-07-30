@@ -20,10 +20,10 @@ public class Stage : MonoBehaviour
     void Start()
     {
         maxBrick = numberOfCol * numberOfRow;
-        int num = maxBrick / 4;
+        int numberOfBrick = maxBrick / 4;
         for (int i = 1; i < 5; i++)
         {
-            colorQuantity.Add((InGameColor)i, num);
+            colorQuantity.Add((InGameColor)i, numberOfBrick);
         }
         GenerateBrick();
     }
@@ -37,7 +37,7 @@ public class Stage : MonoBehaviour
             InGameColor inGameColor = (InGameColor)Random.Range(1, 5);
             if (colorQuantity[inGameColor] > 0)
             {
-                Vector3 newPos = new Vector3(i * 0.4f, 0.05f, j * 0.4f);
+                Vector3 newPos = new Vector3(i * 0.8f, 0.05f, j * 0.4f);
                 Brick newBrick = SimplePool.Spawn<Brick>(brickPrefab, newPos, Quaternion.identity, parrentTf);
                 newBrick.SetData(inGameColor);
                 colorQuantity[inGameColor]--;
