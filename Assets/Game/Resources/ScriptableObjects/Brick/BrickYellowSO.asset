@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: BrickYellowSO
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: e7d56c90473a7eb4a8ee507cd248ef49, type: 2}
-  layerMask: 7
+  layerMask: 9

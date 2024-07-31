@@ -2,17 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FallState : MonoBehaviour
+public class FallState : IState<Bot>
 {
-    // Start is called before the first frame update
-    void Start()
+    public void OnEnter(Bot t)
     {
-        
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnExecute(Bot t)
     {
-        
+        t.StartCoroutine(t.TurnOffCollider());
+        t.ChangeState(new WakeUpState());
+    }
+
+    public void OnExit(Bot t)
+    {
     }
 }

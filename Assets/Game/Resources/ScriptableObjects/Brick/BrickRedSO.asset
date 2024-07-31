@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: BrickRedSO
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: ca6d30e17dd8a2e4aa4a1c23f835946e, type: 2}
-  layerMask: 9
+  layerMask: 8

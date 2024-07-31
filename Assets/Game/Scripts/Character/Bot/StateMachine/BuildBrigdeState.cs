@@ -8,7 +8,6 @@ public class BuildBridgeState : IState<Bot>
     {
         t.SetNextStage();
         Transform nextStage = t.GetNextStage();
-        Debug.Log(nextStage.name);
         t.FindBridge(nextStage);
     }
     public void OnExecute(Bot t)
@@ -17,7 +16,8 @@ public class BuildBridgeState : IState<Bot>
         Vector3 targetBridge = t.GetTargetBridge();
         if(target == targetBridge && Vector3.Distance(t.transform.position,targetBridge) < 0.1f)
         {
-            if(t.GetStackCount() > 0)
+            Debug.Log("build brick");
+            if (t.GetStackCount() > 0)
             {
                 t.SetTarget(t.GetNextStage().position);
             }
@@ -26,6 +26,7 @@ public class BuildBridgeState : IState<Bot>
                 t.ChangeState(new PickBrickState());
             }
         }
+      
         t.Move();
     }
     public void OnExit(Bot t)
