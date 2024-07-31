@@ -10,6 +10,9 @@ public class AttackState : IState<Bot>
 
     public void OnExecute(Bot t)
     {
+        Debug.Log("Attack");
+        t.FindCharacter();
+        t.Move();
     }
 
     public void OnExit(Bot t)

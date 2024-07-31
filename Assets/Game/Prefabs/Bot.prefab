@@ -49,15 +49,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ab1e78471cfb554d889dd7ef9b9c51a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  brickLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  charCollider: {fileID: 2908524629653005801}
   stackTF: {fileID: 3950897664959986317}
   brickPrefab: {fileID: 5194967355868275607, guid: b4b8b51db45fb2e41b993e2997abaebb, type: 3}
   skinnedMeshRenderer: {fileID: 9171440345708160490}
   brigdeLayerMask:
     serializedVersion: 2
     m_Bits: 1024
-  layerMask:
+  charColor: 0
+  characterLayerMask:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 0
   agent: {fileID: 0}
   ATTACK_PLAYER_THRESHOLD: 0
   BUILD_BRIDGE_THRESHOLD: 0

@@ -21,7 +21,7 @@ public class Player : AbstractCharacter
         ChangeDirection();
         Move();
     }
-
+    
     public void ChangeDirection()
     {
         characterDirection = new Vector3(joystick.Direction.x, 0, joystick.Direction.y);
@@ -36,7 +36,32 @@ public class Player : AbstractCharacter
         rb.velocity = new Vector3(characterDirection.x * CHARACTER_SPEED * Time.deltaTime, rb.velocity.y, characterDirection.z * CHARACTER_SPEED * Time.deltaTime);
     }
 
-    
-  
+    public override void Fall()
+    {
+        base.Fall();
+    }
+
+    protected override void OnCollisionEnter(Collision collision)
+    {
+        base.OnCollisionEnter(collision);
+        if (collision.gameObject.CompareTag("Bot"))
+        {
+            Bot bot = collision.gameObject.GetComponent<Bot>();
+            if(bot.GetStackCount() > this.GetStackCount()) {
+                this.Fall();
+                bot.ChangeState(new PickBrickState());
+            }
+            else if(bot.GetStackCount() < this.GetStackCount())
+            {
+                bot.Fall();
+            }
+            else
+            {
+                bot.Fall();
+                this.Fall();
+            }
+        }
+    }
+
 
 }

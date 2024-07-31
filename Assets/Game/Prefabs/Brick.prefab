@@ -50,6 +50,7 @@ MonoBehaviour:
   poolType: 1
   meshRenderer: {fileID: 2945539523857011282}
   boxCollider: {fileID: 7451485306425647081}
+  rb: {fileID: 5393897765928814315}
 --- !u!54 &5393897765928814315
 Rigidbody:
   m_ObjectHideFlags: 0

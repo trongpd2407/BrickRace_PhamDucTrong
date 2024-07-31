@@ -6,6 +6,7 @@ public class Brick : GameUnit
 {
     [SerializeField] private MeshRenderer meshRenderer;
     [SerializeField] private BoxCollider boxCollider;
+    [SerializeField] private Rigidbody rb;
     private InGameColor brickColor;
     private BrickSO brickSO;
 
@@ -57,6 +58,21 @@ public class Brick : GameUnit
     {
         boxCollider.enabled = false;
     }
+
+    public IEnumerator FallDown()
+    {
+        rb.isKinematic = false;
+        boxCollider.isTrigger = false;
+        rb.useGravity = true;
+        boxCollider.enabled = true;
+        this.gameObject.layer = LayerMask.NameToLayer("Gray");
+        meshRenderer.material.color = Color.gray;
+        yield return new WaitForSeconds(2f);
+        rb.isKinematic = true;
+        boxCollider.isTrigger = true;
+        rb.useGravity = false;
+    }
+  
     private void OnTriggerEnter(Collider other)
     {
         AbstractCharacter character = other.GetComponent<AbstractCharacter>();
@@ -67,6 +83,15 @@ public class Brick : GameUnit
             character.StackUp(brickColor);
             OnDespawn();
         }
+        if ((character.CompareTag("Player") || character.CompareTag("Bot")) &&  meshRenderer.sharedMaterial.color == Color.grey)
+        {
+            character.StackUp(character.GetInGameColor());
+            SimplePool.Despawn(this);
+        }
     }
+
+
+
+
 
 } 
