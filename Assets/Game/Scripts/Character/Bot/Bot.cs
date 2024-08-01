@@ -47,18 +47,13 @@ public class Bot : AbstractCharacter
             listStages.Add(child);
         }
         currentStage = 0;
-
         if (currentState == null) {
             ChangeState(new PickBrickState());
         }
     }
     private void Update()
     {
-        Debug.Log(currentState);
         currentState.OnExecute(this);
-    }
-    private void FixedUpdate()
-    {
     }
 
     public void ChangeState(IState<Bot> state)
@@ -77,6 +72,7 @@ public class Bot : AbstractCharacter
     public override void Move()
     {
         agent.SetDestination(target);
+        animator.SetFloat("velocity", agent.speed);
     }
 
     public void SetTarget(Vector3 newTarget)
@@ -90,9 +86,10 @@ public class Bot : AbstractCharacter
         if (Vector3.Distance(transform.position, listStages[currentStage].position) > 2f)
         {
             SetTarget(listStages[currentStage].position);
+            return;
         }
         Collider[] colliders = new Collider[5];
-        int numCollider = Physics.OverlapSphereNonAlloc(transform.position, 2f, colliders, brickLayerMask);
+        int numCollider = Physics.OverlapSphereNonAlloc(transform.position, 3f, colliders, brickLayerMask);
         float minDis = float.MaxValue;
         Vector3 newTarget = new Vector3();
         for (int i = 0; i < numCollider; i++)
@@ -147,7 +144,6 @@ public class Bot : AbstractCharacter
     }
     public void FindBridge(Transform stage)
     {
-        string s = "";
         if (!isFoundBridge)
         {
             float minDis = float.MaxValue;
@@ -163,32 +159,29 @@ public class Bot : AbstractCharacter
                 {
                     minDis = distance;
                     targetBridge = bridgeChild.position;
-                    s = bridgeChild.name;
                     isFoundBridge = true;
                 }
             }
-            Debug.Log(s);
         }
-        Debug.Log(s + "2");
         SetTarget(targetBridge);
     }
 
     public void FindCharacter()
     {
         Collider[] colliders = new Collider[5];
-        int numCollider = Physics.OverlapSphereNonAlloc(transform.position, 3f, colliders, characterLayerMask);
-        if(numCollider <= 0)
+        int numCollider = Physics.OverlapSphereNonAlloc(transform.position, 2f, colliders, characterLayerMask);
+        if(numCollider <= 1)
         {
             ChangeState(new PickBrickState());
             return;
         }
+
         float minDis = float.MaxValue;
         Vector3 newTarget = new Vector3();
         for (int i = 0; i < numCollider; i++)
         {
-            if (!colliders[i].gameObject.name.Equals( this.gameObject.name))
+            if (!colliders[i].gameObject.name.Equals( this.gameObject.name) && (Mathf.Abs(colliders[i].transform.position.y - this.transform.position.y) < 0.05f))
             {
-                Debug.Log("wtf");
                 float distance = Vector3.Distance(colliders[i].transform.position, transform.position);
                 if (distance < minDis)
                 {
@@ -201,22 +194,21 @@ public class Bot : AbstractCharacter
         if(Vector3.Distance(transform.position, newTarget) > 1f) {
             SetIsFindBridge(false);
             ChangeState(new PickBrickState());
+            return;
         }
         SetTarget(newTarget);
+    }
+ 
+    public bool GetIsFall()
+    {
+        return isFall;
     }
     public override void Fall()
     {
         base.Fall();
-        
-        ChangeState(new FallState());
+        ChangeState(new WakeUpState());
     }
-    
-    public IEnumerator WakeUp() {
-        //Play anim
-        yield return new WaitForSeconds(1f);
-        ChangeState(new PickBrickState());
 
-    }
     protected override void OnCollisionEnter(Collision collision)
     {
         base.OnCollisionEnter(collision);
@@ -225,18 +217,18 @@ public class Bot : AbstractCharacter
             Bot bot = collision.gameObject.GetComponent<Bot>();
             if (bot.GetStackCount() > this.GetStackCount())
             {
-                this.Fall();
+                this.ChangeState(new FallState());
                 bot.ChangeState(new PickBrickState());
             }
             else if (bot.GetStackCount() < this.GetStackCount())
             {
-                bot.Fall();
+                bot.ChangeState(new FallState());
                 this.ChangeState(new PickBrickState());
             }
-            else
+            else if(bot.GetStackCount() == this.GetStackCount() && bot.GetStackCount() != 0)
             {
-                bot.Fall();
-                this.Fall();
+                bot.ChangeState(new FallState());
+                this.ChangeState(new FallState());
             }
         }
         if (collision.gameObject.CompareTag("Player"))
@@ -244,7 +236,7 @@ public class Bot : AbstractCharacter
             Player player = collision.gameObject.GetComponent<Player>();
             if (player.GetStackCount() > this.GetStackCount())
             {
-                this.Fall();
+                this.ChangeState(new FallState());
             }
             else if (player.GetStackCount() < this.GetStackCount())
             {
@@ -254,7 +246,7 @@ public class Bot : AbstractCharacter
             else
             {
                 player.Fall();
-                this.Fall();
+                this.ChangeState(new FallState());
             }
         }
     }

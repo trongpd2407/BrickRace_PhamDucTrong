@@ -16,7 +16,6 @@ public class BuildBridgeState : IState<Bot>
         Vector3 targetBridge = t.GetTargetBridge();
         if(target == targetBridge && Vector3.Distance(t.transform.position,targetBridge) < 0.1f)
         {
-            Debug.Log("build brick");
             if (t.GetStackCount() > 0)
             {
                 t.SetTarget(t.GetNextStage().position);
@@ -26,8 +25,11 @@ public class BuildBridgeState : IState<Bot>
                 t.ChangeState(new PickBrickState());
             }
         }
-      
-        t.Move();
+        if (!t.GetIsFall())
+        {
+            t.Move();
+        }
+       
     }
     public void OnExit(Bot t)
     {

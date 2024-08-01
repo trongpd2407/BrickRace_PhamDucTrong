@@ -7,19 +7,18 @@ public class Player : AbstractCharacter
     [SerializeField]
     private Joystick joystick;
 
-    [SerializeField]
-    private Rigidbody rb;
-
-    
-
     void Start()
     {
     }
 
     private void FixedUpdate()
     {
-        ChangeDirection();
-        Move();
+        if (!isFall)
+        {
+            ChangeDirection();
+            Move();
+        }
+       
     }
     
     public void ChangeDirection()
@@ -34,13 +33,14 @@ public class Player : AbstractCharacter
     public override void Move()
     {
         rb.velocity = new Vector3(characterDirection.x * CHARACTER_SPEED * Time.deltaTime, rb.velocity.y, characterDirection.z * CHARACTER_SPEED * Time.deltaTime);
+        animator.SetFloat("velocity", rb.velocity.sqrMagnitude);
     }
 
     public override void Fall()
     {
         base.Fall();
+        StartCoroutine(WakeUp());
     }
-
     protected override void OnCollisionEnter(Collision collision)
     {
         base.OnCollisionEnter(collision);

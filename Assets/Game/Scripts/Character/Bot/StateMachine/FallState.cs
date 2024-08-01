@@ -10,8 +10,7 @@ public class FallState : IState<Bot>
 
     public void OnExecute(Bot t)
     {
-        t.StartCoroutine(t.TurnOffCollider());
-        t.ChangeState(new WakeUpState());
+        t.Fall();
     }
 
     public void OnExit(Bot t)

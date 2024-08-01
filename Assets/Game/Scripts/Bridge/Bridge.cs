@@ -50,10 +50,11 @@ public class Bridge : MonoBehaviour
             {
                 boxCollider.isTrigger = true;
             }
-            else
+            else if(bot.GetStackCount() <= 0)
             {
-                bot.ChangeState(new PickBrickState());
                 boxCollider.isTrigger = false;
+                bot.ChangeState(new PickBrickState());
+                
             }
 
         }

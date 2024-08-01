@@ -11,17 +11,20 @@ public class PickBrickState : IState<Bot>
 
     public void OnExecute(Bot t)
     {
-        t.FindBrick();
-        t.Move();
-        if(t.GetStackCount() > t.GetBuildBridgeThreshold())
+        if (!t.GetIsFall())
         {
-            t.ChangeState(new BuildBridgeState());
+            t.FindBrick();
+            t.Move();
+            if (t.GetStackCount() > t.GetBuildBridgeThreshold())
+            {
+                t.ChangeState(new BuildBridgeState());
+            }
+            if (t.GetStackCount() >= t.GetAttackThreshold() && t.GetStackCount() <= t.GetAttackThreshold() + 2)
+            {
+                t.ChangeState(new AttackState());
+            }
         }
-        if (t.GetStackCount() >= t.GetAttackThreshold() && t.GetStackCount() <= t.GetAttackThreshold() + 2)
-        {
-            t.ChangeState(new AttackState());
-        }
-
+     
     }
 
     public void OnExit(Bot t)
