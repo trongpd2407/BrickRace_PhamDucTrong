@@ -67,7 +67,7 @@ public class Brick : GameUnit
         boxCollider.enabled = true;
         this.gameObject.layer = LayerMask.NameToLayer("Gray");
         meshRenderer.material.color = Color.gray;
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         rb.isKinematic = true;
         boxCollider.isTrigger = true;
         rb.useGravity = false;
@@ -83,7 +83,7 @@ public class Brick : GameUnit
             character.StackUp(brickColor);
             OnDespawn();
         }
-        if ((character.CompareTag("Player") || character.CompareTag("Bot")) &&  meshRenderer.sharedMaterial.color == Color.grey)
+        if ((character.CompareTag("Player") || character.CompareTag("Bot")) &&  meshRenderer.sharedMaterial.color == Color.gray)
         {
             character.StackUp(character.GetInGameColor());
             SimplePool.Despawn(this);

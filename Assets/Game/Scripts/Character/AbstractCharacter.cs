@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class AbstractCharacter : MonoBehaviour
@@ -7,14 +8,16 @@ public abstract class AbstractCharacter : MonoBehaviour
     public const float CHARACTER_SPEED = 70f;
     public LayerMask brickLayerMask;
     protected Vector3 characterDirection;
-
+    protected bool isFall;
     [SerializeField] protected Collider charCollider;
-    private bool isMoving;
 
     private Stack<Brick> stackBrick = new Stack<Brick>();
-
+    [SerializeField] protected Rigidbody rb;
     [SerializeField]
     private Transform stackTF;
+
+    [SerializeField]
+    protected Animator animator;
 
     [SerializeField]
     private Brick brickPrefab;
@@ -31,17 +34,16 @@ public abstract class AbstractCharacter : MonoBehaviour
     {
         stackBrick.Clear();
     }
-    public bool IsMoving
-    {
-        get
-        {
-            return isMoving;
-        }
-    }
+
     public abstract void Move();
     public virtual Color GetColor()
     {
         return skinnedMeshRenderer.material.color;
+    }
+    public virtual IEnumerator SetIsFall(bool isFall)
+    {
+        yield return new WaitForSeconds(2f);
+        this.isFall = isFall;
     }
 
     public virtual InGameColor GetInGameColor()
@@ -69,8 +71,23 @@ public abstract class AbstractCharacter : MonoBehaviour
         }
         stackTF.DetachChildren();
         stackBrick.Clear();
+        isFall = true;
+        animator.SetInteger("Result", 0);
+        animator.SetBool("isFall", isFall);
+        rb.isKinematic = true;
+        charCollider.enabled = false;
     }
+    public virtual IEnumerator WakeUp()
+    {
+        yield return new WaitForSeconds(1f);
+        animator.SetInteger("Result", 0);
+        animator.SetBool("isFall", false);
+        yield return new WaitForSeconds(2.5f);
+        rb.isKinematic = false;
+        charCollider.enabled = true;
+        isFall = false;
 
+    }
     public int GetStackCount()
     {
         return stackBrick.Count;

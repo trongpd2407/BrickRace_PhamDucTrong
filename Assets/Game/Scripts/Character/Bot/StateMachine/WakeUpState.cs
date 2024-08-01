@@ -11,6 +11,7 @@ public class WakeUpState : IState<Bot>
     public void OnExecute(Bot bot)
     {
         bot.StartCoroutine(bot.WakeUp());
+        bot.ChangeState(new PickBrickState());
     }
 
     public void OnExit(Bot bot)
