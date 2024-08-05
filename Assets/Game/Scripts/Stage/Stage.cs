@@ -17,7 +17,13 @@ public class Stage : MonoBehaviour
     [SerializeField]
     private int numberOfCol ;
 
+    private List<Brick> bricks = new List<Brick>();
+
     void Start()
+    {
+        OnInIt();
+    }
+    public void OnInIt()
     {
         maxBrick = numberOfCol * numberOfRow;
         int numberOfBrick = maxBrick / 4;
@@ -40,6 +46,8 @@ public class Stage : MonoBehaviour
                 Vector3 newPos = new Vector3(i * 0.8f, 0.05f, j * 0.4f);
                 Brick newBrick = SimplePool.Spawn<Brick>(brickPrefab, newPos, Quaternion.identity, parrentTf);
                 newBrick.SetData(inGameColor);
+                newBrick.OnDespawn();
+                bricks.Add(newBrick);
                 colorQuantity[inGameColor]--;
                 count++;
                 i++;
@@ -53,6 +61,10 @@ public class Stage : MonoBehaviour
         }
        
        
+    }
+    public List<Brick> GetBricks()
+    {
+        return bricks;
     }
 
 
