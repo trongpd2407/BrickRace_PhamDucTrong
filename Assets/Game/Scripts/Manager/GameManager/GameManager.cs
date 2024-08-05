@@ -14,14 +14,12 @@ public class GameManager : Singleton<GameManager>
     {
         player = FindAnyObjectByType<Player>();
         bot = FindObjectsOfType<Bot>();
-    }
-    private void Start()
-    {
         currentLevel = 1;
         UIManager.Instance.OpenUI<CanvasMainMenu>();
         LoadLevel(GetCurrentLevel());
         Pause();
     }
+
     public int GetCurrentLevel()
     {
         return currentLevel;
@@ -42,9 +40,10 @@ public class GameManager : Singleton<GameManager>
     {
         LoadLevel(GetCurrentLevel());
         player.OnInIt();
-        for(int i = 0; i < bot.Length; i++)
+        for (int i = 0; i < bot.Length; i++)
         {
             bot[i].OnInIt();
+            bot[i].ChangeState(new PickBrickState());
         }
     }
     // FIX: Many BUG
