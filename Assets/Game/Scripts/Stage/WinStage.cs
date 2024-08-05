@@ -8,10 +8,14 @@ public class WinPos : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Player") ){
             GameManager.Instance.OnVictory();
+            GameManager.Instance.Pause();
+
         }
         if (collision.gameObject.CompareTag("Bot"))
         {
             GameManager.Instance.OnLose();
+            GameManager.Instance.Pause();
+
         }
     }
 }
