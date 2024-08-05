@@ -10,14 +10,14 @@ using UnityEngine.UIElements;
 public class Bot : AbstractCharacter
 {
     private IState<Bot> currentState;
-
+    private int currentLevel;
     private Vector3 target;
     [SerializeField]
     private LayerMask characterLayerMask;
-
     [SerializeField]
     private NavMeshAgent agent;
 
+    private Vector3 startPos;
     private List<Transform> listStages;
 
     private int currentStage;
@@ -30,14 +30,28 @@ public class Bot : AbstractCharacter
     [SerializeField] private int ATTACK_PLAYER_THRESHOLD;
     [SerializeField] private int BUILD_BRIDGE_THRESHOLD;
 
+    private void Awake()
+    {
+        startPos = transform.position;
+    }
     private void Start()
     {
+        OnInIt();
+    }
+    public override void OnInIt()
+    {
+        base.OnInIt();
+        agent.enabled = false;
+        agent.transform.position = startPos;
+        agent.enabled = true;
+        currentLevel = GameManager.Instance.GetCurrentLevel();
         listStages = new List<Transform>();
         GameObject level = GameObject.Find("Level");
-        if (level == null) {
+        if (level == null)
+        {
             Debug.LogError("Can not find level");
         }
-        Transform stageTf = level.transform.Find("Level 1");
+        Transform stageTf = level.transform.Find("Level " + currentLevel+"(Clone)");
         if (stageTf == null)
         {
             Debug.LogError("CanNotFindStage");
@@ -47,7 +61,8 @@ public class Bot : AbstractCharacter
             listStages.Add(child);
         }
         currentStage = 0;
-        if (currentState == null) {
+        if (currentState == null)
+        {
             ChangeState(new PickBrickState());
         }
     }
@@ -83,7 +98,11 @@ public class Bot : AbstractCharacter
 
     public void FindBrick()
     {
-        if (Vector3.Distance(transform.position, listStages[currentStage].position) > 2f)
+        if (listStages[currentStage] == null)
+        {
+            return;
+        }
+        if (Vector3.Distance(transform.position, listStages[currentStage].position) > 2f )
         {
             SetTarget(listStages[currentStage].position);
             return;

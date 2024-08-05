@@ -6,7 +6,6 @@ public class PickBrickState : IState<Bot>
 {
     public void OnEnter(Bot t)
     {
-
     }
 
     public void OnExecute(Bot t)

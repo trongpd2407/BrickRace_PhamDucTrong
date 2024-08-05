@@ -11,7 +11,7 @@ public abstract class AbstractCharacter : MonoBehaviour
     protected bool isFall;
     [SerializeField] protected Collider charCollider;
 
-    private Stack<Brick> stackBrick = new Stack<Brick>();
+    protected Stack<Brick> stackBrick = new Stack<Brick>();
     [SerializeField] protected Rigidbody rb;
     [SerializeField]
     private Transform stackTF;
@@ -30,9 +30,13 @@ public abstract class AbstractCharacter : MonoBehaviour
 
     [SerializeField]
     private InGameColor charColor;
-    public void OnInIt()
+
+
+ 
+    public virtual void OnInIt()
     {
         stackBrick.Clear();
+        SimplePool.Collect(brickPrefab);
     }
 
     public abstract void Move();
@@ -59,10 +63,7 @@ public abstract class AbstractCharacter : MonoBehaviour
         newBrick.TurnOffCollider();
         newBrick.SetData(brickColor);
     }
-    private void Update()
-    {
-       
-    }
+
     public virtual void Fall()
     {
         foreach(Brick brick in stackBrick)

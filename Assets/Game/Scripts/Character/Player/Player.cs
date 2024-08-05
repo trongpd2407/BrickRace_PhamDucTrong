@@ -6,9 +6,15 @@ public class Player : AbstractCharacter
 {
     [SerializeField]
     private Joystick joystick;
-
-    void Start()
+    private Vector3 startPos;
+    private void Awake()
     {
+        startPos = transform.position;
+    }
+    public override void OnInIt()
+    {
+        base.OnInIt();
+        transform.position = startPos;  
     }
 
     private void FixedUpdate()

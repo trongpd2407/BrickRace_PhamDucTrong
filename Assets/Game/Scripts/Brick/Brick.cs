@@ -16,7 +16,7 @@ public class Brick : GameUnit
         boxCollider.enabled = true;
         meshRenderer.enabled = true;
     }
-    public void OnDespawn()
+    public void OnRespawn()
     {
         if (boxCollider.enabled)
         {
@@ -28,9 +28,20 @@ public class Brick : GameUnit
         }
         Invoke(nameof(OnInIt), 3f);
     }
-    private void Update()
+    public void OnDespawn()
     {
+        if (boxCollider.enabled)
+        {
+            boxCollider.enabled = false;
+        }
+        if (meshRenderer.enabled)
+        {
+            meshRenderer.enabled = false;
+        }
     }
+
+
+
 
 
     public void SetData(InGameColor brickColor)
@@ -53,6 +64,10 @@ public class Brick : GameUnit
         }
         meshRenderer.sharedMaterial = brickSO.material;
         gameObject.layer = brickSO.layerMask;
+    }
+    public InGameColor GetBrickIGC()
+    {
+        return brickColor;
     }
     public void TurnOffCollider()
     {
@@ -81,7 +96,7 @@ public class Brick : GameUnit
         }
         if ((character.CompareTag("Player") || character.CompareTag("Bot"))&& character.GetColor() == meshRenderer.sharedMaterial.color){
             character.StackUp(brickColor);
-            OnDespawn();
+            OnRespawn();
         }
         if ((character.CompareTag("Player") || character.CompareTag("Bot")) &&  meshRenderer.sharedMaterial.color == Color.gray)
         {
