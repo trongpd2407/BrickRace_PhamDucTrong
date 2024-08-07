@@ -7,6 +7,7 @@ public class CanvasMainMenu : UICanvas
     public void PlayButton()
     {
         Close(0);
+        GameManager.Instance.Start();
         UIManager.Instance.OpenUI<CanvasGameplay>();
     }
 
