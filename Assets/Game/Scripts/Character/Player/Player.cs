@@ -39,7 +39,7 @@ public class Player : AbstractCharacter
     public override void Move()
     {
         rb.velocity = new Vector3(characterDirection.x * CHARACTER_SPEED * Time.deltaTime, rb.velocity.y, characterDirection.z * CHARACTER_SPEED * Time.deltaTime);
-        animator.SetFloat("velocity", rb.velocity.sqrMagnitude);
+        animator.SetFloat(Constants.ANI_VELOCITY, rb.velocity.sqrMagnitude);
     }
 
     public override void Fall()
@@ -50,7 +50,7 @@ public class Player : AbstractCharacter
     protected override void OnCollisionEnter(Collision collision)
     {
         base.OnCollisionEnter(collision);
-        if (collision.gameObject.CompareTag("Bot"))
+        if (collision.gameObject.CompareTag(Constants.TAG_BOT))
         {
             Bot bot = collision.gameObject.GetComponent<Bot>();
             if(bot.GetStackCount() > this.GetStackCount()) {

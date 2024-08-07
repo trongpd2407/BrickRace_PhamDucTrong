@@ -11,7 +11,7 @@ public class Bridge : MonoBehaviour
     private BoxCollider boxCollider;
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") )
+        if (other.CompareTag(Constants.TAG_PLAYER) )
         {
             Player player = other.GetComponent<Player>();
             if (player == null)
@@ -33,7 +33,7 @@ public class Bridge : MonoBehaviour
                 boxCollider.isTrigger = false;
             }
         }
-        if (other.CompareTag("Bot"))
+        if (other.CompareTag(Constants.TAG_BOT))
         {
             Bot bot = other.GetComponent<Bot>();
             if (bot == null)

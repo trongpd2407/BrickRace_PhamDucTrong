@@ -51,12 +51,12 @@ public class Bot : AbstractCharacter
     {
         currentLevel = GameManager.Instance.GetCurrentLevel();
         listStages = new List<Transform>();
-        GameObject level = GameObject.Find("Level");
+        GameObject level = GameObject.Find(Constants.LEVEL_STRING);
         if (level == null)
         {
             Debug.LogError("Can not find level");
         }
-        Transform stageTf = level.transform.Find("Level " + currentLevel + "(Clone)");
+        Transform stageTf = level.transform.Find(Constants.LEVEL_STRING + " "+ currentLevel + Constants.CLONE_STRING);
         if (stageTf == null)
         {
             Debug.LogError("CanNotFindStage");
@@ -88,7 +88,7 @@ public class Bot : AbstractCharacter
     public override void Move()
     {
         agent.SetDestination(target);
-        animator.SetFloat("velocity", agent.speed);
+        animator.SetFloat(Constants.ANI_VELOCITY, agent.speed);
     }
 
     public void SetTarget(Vector3 newTarget)
@@ -169,7 +169,7 @@ public class Bot : AbstractCharacter
         if (!isFoundBridge)
         {
             float minDis = float.MaxValue;
-            Transform bridge = stage.Find("Bridge");
+            Transform bridge = stage.Find(Constants.BRIDGE_STRING);
             if (bridge == null)
             {
                 Debug.LogError("Cant Find Bridge");
@@ -234,7 +234,7 @@ public class Bot : AbstractCharacter
     protected override void OnCollisionEnter(Collision collision)
     {
         base.OnCollisionEnter(collision);
-        if (collision.gameObject.CompareTag("Bot"))
+        if (collision.gameObject.CompareTag(Constants.TAG_BOT))
         {
             Bot bot = collision.gameObject.GetComponent<Bot>();
             if (bot.GetStackCount() > this.GetStackCount())
@@ -253,7 +253,7 @@ public class Bot : AbstractCharacter
                 this.ChangeState(new FallState());
             }
         }
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag(Constants.TAG_PLAYER))
         {
             Player player = collision.gameObject.GetComponent<Player>();
             if (player.GetStackCount() > this.GetStackCount())

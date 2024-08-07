@@ -43,7 +43,7 @@ public class Stage : MonoBehaviour
             InGameColor inGameColor = (InGameColor)Random.Range(1, 5);
             if (colorQuantity[inGameColor] > 0)
             {
-                Vector3 newPos = new Vector3(i * 0.8f, 0.05f, j * 0.4f);
+                Vector3 newPos = new Vector3(i * Constants.OFFSET_BRICK_SPAWN_X, Constants.OFFSET_BRICK_SPAWN_Y, j * Constants.OFFSET_BRICK_SPAWN_Z);
                 Brick newBrick = SimplePool.Spawn<Brick>(brickPrefab, newPos, Quaternion.identity, parrentTf);
                 newBrick.SetData(inGameColor);
                 newBrick.OnDespawn();
