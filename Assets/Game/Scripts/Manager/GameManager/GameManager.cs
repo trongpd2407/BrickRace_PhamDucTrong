@@ -19,6 +19,17 @@ public class GameManager : Singleton<GameManager>
         LoadLevel(GetCurrentLevel());
         Pause();
     }
+    public void Start()
+    {
+        currentLevel = 1;
+        LoadLevel(GetCurrentLevel());
+        player.OnInIt();
+        for (int i = 0; i < bot.Length; i++)
+        {
+            bot[i].OnInIt();
+
+        }
+    }
 
     public int GetCurrentLevel()
     {
@@ -43,7 +54,7 @@ public class GameManager : Singleton<GameManager>
         for (int i = 0; i < bot.Length; i++)
         {
             bot[i].OnInIt();
-            bot[i].ChangeState(new PickBrickState());
+           
         }
     }
     // FIX: Many BUG

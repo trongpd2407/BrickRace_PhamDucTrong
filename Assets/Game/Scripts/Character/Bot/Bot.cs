@@ -44,6 +44,11 @@ public class Bot : AbstractCharacter
         agent.enabled = false;
         agent.transform.position = startPos;
         agent.enabled = true;
+        RefindStage();
+        ChangeState(new IdleState());
+    }
+    private void RefindStage()
+    {
         currentLevel = GameManager.Instance.GetCurrentLevel();
         listStages = new List<Transform>();
         GameObject level = GameObject.Find("Level");
@@ -51,7 +56,7 @@ public class Bot : AbstractCharacter
         {
             Debug.LogError("Can not find level");
         }
-        Transform stageTf = level.transform.Find("Level " + currentLevel+"(Clone)");
+        Transform stageTf = level.transform.Find("Level " + currentLevel + "(Clone)");
         if (stageTf == null)
         {
             Debug.LogError("CanNotFindStage");
@@ -61,10 +66,6 @@ public class Bot : AbstractCharacter
             listStages.Add(child);
         }
         currentStage = 0;
-        if (currentState == null)
-        {
-            ChangeState(new PickBrickState());
-        }
     }
     private void Update()
     {
@@ -100,6 +101,7 @@ public class Bot : AbstractCharacter
     {
         if (listStages[currentStage] == null)
         {
+            RefindStage();
             return;
         }
         if (Vector3.Distance(transform.position, listStages[currentStage].position) > 2f )
@@ -113,7 +115,7 @@ public class Bot : AbstractCharacter
         Vector3 newTarget = new Vector3();
         for (int i = 0; i < numCollider; i++)
         {
-          
+
             float distance = Vector3.Distance(colliders[i].transform.position, transform.position);
             if (distance < minDis)
             {
@@ -122,6 +124,7 @@ public class Bot : AbstractCharacter
             }
 
         }
+        Debug.Log(newTarget);
         SetTarget(newTarget);
     }
 
