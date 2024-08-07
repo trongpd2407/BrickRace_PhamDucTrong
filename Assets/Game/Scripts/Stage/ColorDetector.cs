@@ -10,7 +10,7 @@ public class ColorDetector : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         
-        if (collision.gameObject.CompareTag("Bot") || collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag(Constants.TAG_BOT) || collision.gameObject.CompareTag(Constants.TAG_PLAYER))
         {
             List<Brick> bricks = stage.GetBricks();
             if(bricks.Count <= 0 || stage == null) {

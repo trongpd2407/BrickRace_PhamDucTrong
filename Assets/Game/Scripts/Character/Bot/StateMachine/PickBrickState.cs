@@ -18,7 +18,7 @@ public class PickBrickState : IState<Bot>
             {
                 t.ChangeState(new BuildBridgeState());
             }
-            if (t.GetStackCount() >= t.GetAttackThreshold() && t.GetStackCount() <= t.GetAttackThreshold() + 2)
+            if (t.GetStackCount() >= t.GetAttackThreshold() && t.GetStackCount() <= t.GetAttackThreshold() + Constants.NUMBER_OF_THRESHOLD)
             {
                 t.ChangeState(new AttackState());
             }

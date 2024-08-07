@@ -25,7 +25,7 @@ public class Door : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Bot"))
+        if (other.CompareTag(Constants.TAG_BOT))
         {
             Bot bot = other.GetComponent<Bot>();
             bot.IncreaseStage();
